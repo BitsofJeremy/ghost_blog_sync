@@ -19,7 +19,7 @@ _note: I am choosing to keep the cross-posting to a minimum_
 
 ### Python setup:
 
-- Clone the repo: `git clone https://gitlab.com/abvavgjeremy/ghost_blog_sync.git`
+- Clone the repo: `git clone https://github.com/ephergent/ghost_blog_sync.git`
 - Change into the directory: `cd ghost_blog_sync`
 - Create a virtual environment: `virtualenv -p pytho3 venv`
 - Source it: `source venv/bin/activate`
