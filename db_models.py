@@ -2,8 +2,7 @@
 
 from sqlalchemy import Column, Integer, String, \
     ForeignKey, Table, Boolean
-from sqlalchemy.orm import relationship, sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship, sessionmaker, declarative_base
 from sqlalchemy import create_engine
 
 engine = create_engine('sqlite:///ghost_posts.db')
@@ -65,6 +64,7 @@ class Posts(Base):
         'feature_image': 'String',
         'tags': relationship,
         'twiiter': Boolean,
+        'warpcast': Boolean,
         'mastodon': Boolean
     }
     """
@@ -77,8 +77,9 @@ class Posts(Base):
     feature_image = Column(String())
 
     # Posted to Social?
-    twitter = Column(Boolean)
-    mastodon = Column(Boolean)
+    twitter = Column(Boolean, default=False)
+    warpcast = Column(Boolean, default=False)
+    mastodon = Column(Boolean, default=False)
 
     # Relationships
     tags = relationship(
@@ -111,6 +112,7 @@ class Posts(Base):
             "feature_image": self.feature_image,
             "tags": self.tags,
             "twitter": self.twitter,
+            "warpcast": self.warpcast,
             "mastodon": self.mastodon
         }
 

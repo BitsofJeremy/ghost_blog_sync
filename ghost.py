@@ -7,11 +7,11 @@ import sys
 
 import pprint
 pp = pprint.PrettyPrinter(indent=4)
+GHOST_API_KEY = os.getenv('GHOST_API_KEY')
+GHOST_DOMAIN = os.getenv('GHOST_DOMAIN')
 
 
 def get():
-    GHOST_API_KEY = os.getenv('GHOST_API_KEY')
-    GHOST_DOMAIN = os.getenv('GHOST_DOMAIN')
     url = f'https://{GHOST_DOMAIN}/ghost/api/v3/' \
           f'content/posts/?key={GHOST_API_KEY}&limit=all&' \
           f'order=published_at%20asc&include=tags'

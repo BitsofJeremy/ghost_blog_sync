@@ -1,11 +1,15 @@
 # blog_sync.py
 
 # imports
+import os
 from db_models import make_session, Posts, Tags
 from ghost import get
 from twit_it import send_tweet
+from cast_it import send_cast
 from toot_it import send_toot
 import time
+
+WARPCAST_CHANNEL = os.getenv("WARPCAST_CHANNEL")
 
 
 def make_hashtag(text):
@@ -52,63 +56,11 @@ def main():
                     Tags.tag_id == tag['tag_id']).one()
                 tag_obj_list.append(tag_obj)
 
-        # ### TWITTER ### #
-        # --- DISABLED ---
-        # Check if posts exists and tweeted
-        # print(tag_obj_list)
-        # post_exists = sesh.query(Posts).filter(Posts.twitter).filter(
-        #     Posts.post_uuid == post['post_uuid']).scalar() is not None
-        # if post_exists:
-        #     print(f"This post exists in DB and "
-        #           f"tweeted:  {post['title']}")
-        # else:
-        #     # Add Post to DB
-        #     p = Posts(
-        #         post_id=post['post_id'],
-        #         post_uuid=post['post_uuid'],
-        #     )
-        #     p.title = post['title']
-        #     p.url = post['url']
-        #     p.excerpt = post['excerpt']
-        #     p.feature_image = post['feature_image']
-        #     # For SQL relations to work,
-        #     # need SQL objects in a list
-        #     p.tags = tag_obj_list
-        #
-        #     # Make tags into hashtags
-        #     hashtags = ''
-        #     for tag in tag_obj_list:
-        #         t = make_hashtag(tag.tag_name)
-        #         hashtags += f'{t} '
-        #     # print(f'Hashtags: \n {hashtags}')
-        #
-        #     # send post to twitter
-        #     print("Sending post to Twitter")
-        #     tweet = f"{post['title']} {hashtags} {post['url']}"
-        #     # print(f'Tweet Length: {len(tweet)}')
-        #     print(tweet)
-        #     sent_tweet = send_tweet(status=tweet)
-        #     if sent_tweet:
-        #         p.twitter = True
-        #         sesh.add(p)
-        #         sesh.commit()
-        #     else:
-        #         # Try again some other time. Next run.
-        #         sesh.add(p)
-        #         sesh.commit()
-        #     # Going to sleep for 45 seconds to not
-        #     # get rate limited on twitter API
-        #     time.sleep(45)
-
-        # ### MASTODON ### #
-
-        # Check if posts exists and tooted
-        # print(tag_obj_list)
-        post_exists = sesh.query(Posts).filter(Posts.mastodon).filter(
+        # Check if posts exists
+        post_exists = sesh.query(Posts).filter(
             Posts.post_uuid == post['post_uuid']).scalar() is not None
         if post_exists:
-            print(f"This post exists in DB and "
-                  f"tooted:  {post['title']}")
+            print(f"This post exists in DB: {post['title']}")
         else:
             # Add Post to DB
             p = Posts(
@@ -123,33 +75,88 @@ def main():
             # need SQL objects in a list
             p.tags = tag_obj_list
 
-            # Make tags into hashtags
-            hashtags = ''
-            for tag in tag_obj_list:
-                t = make_hashtag(tag.tag_name)
-                hashtags += f'{t} '
-            # print(f'Hashtags: \n {hashtags}')
+        # Make tags into hashtags
+        hashtags = ''
+        for tag in tag_obj_list:
+            t = make_hashtag(tag.tag_name)
+            hashtags += f'{t} '
+        # print(f'Hashtags: \n {hashtags}')
 
+        # ### TWITTER ### #
+        # Check if posts exists and tweeted
+        post_tweeted = sesh.query(Posts).filter(Posts.twitter).filter(
+            Posts.post_uuid == post['post_uuid']).scalar() is not None
+        if post_tweeted:
+            print(f"This post exists in DB and "
+                  f"tweeted:  {post['title']}")
+        else:
+            # send post to twitter
+            print("Sending post to Twitter")
+            tweet = f"{post['title']} {hashtags} {post['url']}"
+            # print(f'Tweet Length: {len(tweet)}')
+            print(tweet)
+            sent_tweet = send_tweet(status=tweet)
+            if sent_tweet:
+                # Update the DB we tweeted this post already
+                p = sesh.query(Posts).filter(Posts.twitter).filter(Posts.post_uuid == post['post_uuid']).first()
+                p.twitter = True
+                sesh.add(p)
+                sesh.commit()
+
+            # Going to sleep for 45 seconds to not
+            # get rate limited on twitter API
+            time.sleep(45)
+
+        # ### MASTODON ### #
+        # Check if posts exists and tooted
+        post_tooted = sesh.query(Posts).filter(Posts.mastodon).filter(
+            Posts.post_uuid == post['post_uuid']).scalar() is not None
+        if post_tooted:
+            print(f"This post exists in DB and "
+                  f"tooted:  {post['title']}")
+        else:
             # send post to mastodon
             print("Sending post to Mastodon")
             toot = f"{post['title']} {hashtags} {post['url']}"
-            # print(f'toot Length: {len(toot)}')
             print(toot)
             sent_toot = send_toot(status=toot)
             if sent_toot:
+                p = sesh.query(Posts).filter(Posts.mastodon).filter(Posts.post_uuid == post['post_uuid']).first()
                 p.mastodon = True
                 sesh.add(p)
                 sesh.commit()
-            else:
-                # Try again some other time. Next run.
-                sesh.add(p)
-                sesh.commit()
+
             # Going to sleep for 45 seconds to not
             # get rate limited on mastodon API
             time.sleep(45)
 
+        # ### WARPCAST ### #
+        # Check if posts exists and casted
+        post_casted = sesh.query(Posts).filter(Posts.warpcast).filter(
+            Posts.post_uuid == post['post_uuid']).scalar() is not None
+        if post_casted:
+            print(f"This post exists in DB and "
+                  f"casted:  {post['title']}")
+        else:
+            # send post to Warpcast
+            print("Sending post to Warpcast")
+            sent_cast = send_cast(
+                status=post['title'],
+                link=post['url'],
+                channel=WARPCAST_CHANNEL
+            )
+            if sent_cast:
+                p = sesh.query(Posts).filter(Posts.warpcast).filter(Posts.post_uuid == post['post_uuid']).first()
+                p.warpcast = True
+                sesh.add(p)
+                sesh.commit()
+
+            # Going to sleep for 45 seconds to not
+            # get rate limited on Warpcast API
+            time.sleep(45)
+
     # finish
-    print("FINISHED")
+    print("FINISHED SENDING TO SOCIAL MEDIA")
 
 
 if __name__ == '__main__':

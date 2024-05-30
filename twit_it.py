@@ -14,22 +14,21 @@ consumer_secret = os.getenv('CONSUMER_SECRET')
 oauth_token = os.getenv('OAUTH_TOKEN')
 oauth_token_secret = os.getenv('OAUTH_TOKEN_SECRET')
 
-# Setup the app Oauth
-auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-auth.set_access_token(oauth_token, oauth_token_secret)
-
-# Initialize the api
-api = tweepy.API(auth)
+client = tweepy.Client(
+    consumer_key=consumer_key, consumer_secret=consumer_secret,
+    access_token=oauth_token, access_token_secret=oauth_token_secret
+)
 
 
 def send_tweet(status):
     """ Just sends text to Twitter """
-    res = api.update_status(status)
-    if res:
+    response = client.create_tweet(text=status)
+    print(response)
+    if response:
         print(f'tweet sent!')
         return True
     else:
-        print(f'doh: {res}')
+        print(f'doh: {response}')
         return False
 
 

@@ -1,14 +1,19 @@
 # ghost_blog_sync
 
-This is a little script that will grab Ghost blog posts and the post them to Twitter via APIs
+This is a little app that will grab blog posts from my Ghost blog and then post them to social media via APIs
 
-Note: Twitter functionality has been disabled.
+### Social Media Supported
+
+ [x] Warpcast
+ [x] Twitter
+ [x] Mastodon
+ [] BlueSky (?? not sure if this is possible ??)
+ [] Threads (?? not sure if this is possible ??)
+ [] LinkedIn (?? Do I bother ??)
 
 ## The Setup
 
-You will need some key from your Ghost blog, Twitter, and the Mastodon instance you live in.
-
-_note: I am choosing to keep the cross-posting to a minimum_ 
+You will need API keys from your Ghost blog,and social media accounts
 
 ### API Key authentication setup:
 
@@ -19,7 +24,7 @@ _note: I am choosing to keep the cross-posting to a minimum_
 
 ### Python setup:
 
-- Clone the repo: `git clone https://github.com/ephergent/ghost_blog_sync.git`
+- Clone the repo: `git clone https://github.com/BitsofJeremy/ghost_blog_sync.git
 - Change into the directory: `cd ghost_blog_sync`
 - Create a virtual environment: `virtualenv -p pytho3 venv`
 - Source it: `source venv/bin/activate`
@@ -27,7 +32,7 @@ _note: I am choosing to keep the cross-posting to a minimum_
 
 ### Run it:
 
-- Create a minimal DB: `python db_models.py`
+- Create a minimal database: `python db_models.py`
 - Run the sync: `python blog_sync.py`
 
 ### Extras
@@ -40,9 +45,13 @@ Just want to Toot?
 
 `python toot_it.py --send "Test from Python"`
 
-Want to set all your posts to member only, or public?
+Just want to Cast?
 
-_note: currently set to public, change visibility to member_
+`python cast_it.py --send "Test from Python"`
+
+Want to set all your blog posts in Ghost set to member only, or fully public?
+
+_note: currently set to public, change `visibility` to member_
 
 `python update_posts.py`
 

@@ -46,14 +46,14 @@ def update_post():
     """ Use the ghost.py script to get all posts from the blog API.
      Iterate over each and update visibility to 'members' """
     posts = get()
-    #
+    # Get a JWT
     jwt_token = get_jwt()
     for post in posts:
         # print(post)
         post_id = post['post_id']
         updated_at = post['updated_at']
         url = f'https://{GHOST_DOMAIN}/ghost/api/v3/admin/posts/{post_id}/'
-        # Change visibility to 'member'
+        # Change visibility to 'member' to lock down your blog to only members
         body = {
             "posts": [{
                 "visibility": "public",
