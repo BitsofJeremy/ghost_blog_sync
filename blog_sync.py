@@ -36,11 +36,11 @@ def main():
     # Make a DB session
     sesh = make_session()
     for post in posts:
-        print(post)
+        # print(post)
         # Look for tags, if not exist, create, return tag_obj
         tag_obj_list = []
         for tag in post['tags']:
-            print(tag)
+            # print(tag)
             tag_exists = sesh.query(Tags).filter(Tags.tag_id == tag['tag_id']).scalar() is not None
             if tag_exists:
                 tag_obj = sesh.query(Tags).filter(

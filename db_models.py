@@ -1,5 +1,5 @@
 # ### CREATE A DB ###
-
+import os
 from sqlalchemy import Column, Integer, String, \
     ForeignKey, Table, Boolean
 from sqlalchemy.orm import relationship, sessionmaker, declarative_base
@@ -117,8 +117,17 @@ class Posts(Base):
         }
 
 
+# def make_session():
+#     engine = create_engine('sqlite:///ghost_posts.db')
+#     Session = sessionmaker(bind=engine)
+#     session = Session()
+#     return session
+
+
 def make_session():
-    engine = create_engine('sqlite:///ghost_posts.db')
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    db_path = os.path.join(script_dir, 'ghost_posts.db')
+    engine = create_engine(f'sqlite:///{db_path}')
     Session = sessionmaker(bind=engine)
     session = Session()
     return session
