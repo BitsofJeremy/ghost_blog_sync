@@ -3,6 +3,8 @@ import argparse
 import os
 import sys
 from mastodon import Mastodon
+from dotenv import load_dotenv
+load_dotenv()
 
 # Example
 #

@@ -5,6 +5,7 @@ import sys
 
 from farcaster import Warpcast
 from dotenv import load_dotenv
+load_dotenv()
 
 # Example
 #
@@ -12,7 +13,7 @@ from dotenv import load_dotenv
 # --link "https://bits.jeremyschroeder.net/" \
 # --channel "bitsofjeremy"
 
-load_dotenv()
+
 client = Warpcast(mnemonic=os.environ.get("MNEMONIC_ENV_VAR"))
 
 

@@ -4,8 +4,10 @@ import argparse
 import os
 import requests
 import sys
-
 import pprint
+from dotenv import load_dotenv
+load_dotenv()
+
 pp = pprint.PrettyPrinter(indent=4)
 GHOST_API_KEY = os.getenv('GHOST_API_KEY')
 GHOST_DOMAIN = os.getenv('GHOST_DOMAIN')

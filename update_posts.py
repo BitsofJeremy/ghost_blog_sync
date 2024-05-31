@@ -9,6 +9,9 @@ import os
 import requests
 import pprint
 from ghost import get
+from dotenv import load_dotenv
+load_dotenv()
+
 
 pp = pprint.PrettyPrinter(indent=4)
 # Create an integration, then copy the admin key to an ENV
