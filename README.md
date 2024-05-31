@@ -24,9 +24,9 @@ You will need API keys from your Ghost blog,and social media accounts
 
 ### Python setup:
 
-- Clone the repo: `git clone https://github.com/BitsofJeremy/ghost_blog_sync.git
+- Clone the repo: `git clone https://github.com/BitsofJeremy/ghost_blog_sync.git`
 - Change into the directory: `cd ghost_blog_sync`
-- Create a virtual environment: `virtualenv -p pytho3 venv`
+- Create a virtual environment: `virtualenv -p python3 venv`
 - Source it: `source venv/bin/activate`
 - Install requirements: `pip install -r requirements.txt`
 
