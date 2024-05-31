@@ -4,12 +4,12 @@ This is a little app that will grab blog posts from my Ghost blog and then post 
 
 ### Social Media Supported
 
- [x] Warpcast
- [x] Twitter
- [x] Mastodon
- [] BlueSky (?? not sure if this is possible ??)
- [] Threads (?? not sure if this is possible ??)
- [] LinkedIn (?? Do I bother ??)
+- [x] Warpcast
+- [x] Twitter
+- [x] Mastodon
+- [] BlueSky (?? not sure if this is possible ??)
+- [] Threads (?? not sure if this is possible ??)
+- [] LinkedIn (?? Do I bother ??)
 
 ## The Setup
 
