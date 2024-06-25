@@ -108,9 +108,9 @@ def main():
                 sesh.add(p)
                 sesh.commit()
 
-            # Going to sleep for 10 seconds to not
+            # Going to sleep for 60 seconds to not
             # get rate limited on twitter API
-            time.sleep(10)
+            time.sleep(60)
 
         # ### MASTODON ### #
         # Check if posts exists and tooted
@@ -131,9 +131,9 @@ def main():
                 sesh.add(p)
                 sesh.commit()
 
-            # Going to sleep for 10 seconds to not
+            # Going to sleep for 60 seconds to not
             # get rate limited on mastodon API
-            time.sleep(10)
+            time.sleep(60)
 
         # ### WARPCAST ### #
         # Check if posts exists and casted
@@ -156,34 +156,34 @@ def main():
                 sesh.add(p)
                 sesh.commit()
 
-            # Going to sleep for 10 seconds to not
+            # Going to sleep for 60 seconds to not
             # get rate limited on Warpcast API
-            time.sleep(10)
+            time.sleep(60)
 
         # ### BLUESKY ### #
         # Check if posts exists and sent
-        post_in_sky = sesh.query(Posts).filter(Posts.bluesky).filter(
-            Posts.post_uuid == post['post_uuid']).scalar() is not None
-        if post_in_sky:
-            print(f"This post exists in DB and "
-                  f"tweeted:  {post['title']}")
-        else:
-            # send post to bluesky
-            print("Sending post to Bluesky")
-            sky_post = f"{post['title']} {hashtags} {post['url']}"
-            # print(f'sky_post Length: {len(sky_post)}')
-            print(sky_post)
-            sent_sky_post = send_post_to_sky(status=sky_post)
-            if sent_sky_post:
-                # Update the DB we posted this to bluesky already
-                p = sesh.query(Posts).filter(Posts.post_uuid == post['post_uuid']).first()
-                p.bluesky = True
-                sesh.add(p)
-                sesh.commit()
+        # post_in_sky = sesh.query(Posts).filter(Posts.bluesky).filter(
+        #     Posts.post_uuid == post['post_uuid']).scalar() is not None
+        # if post_in_sky:
+        #     print(f"This post exists in DB and "
+        #           f"tweeted:  {post['title']}")
+        # else:
+        #     # send post to bluesky
+        #     print("Sending post to Bluesky")
+        #     sky_post = f"{post['title']} {hashtags} {post['url']}"
+        #     # print(f'sky_post Length: {len(sky_post)}')
+        #     print(sky_post)
+        #     sent_sky_post = send_post_to_sky(status=sky_post)
+        #     if sent_sky_post:
+        #         # Update the DB we posted this to bluesky already
+        #         p = sesh.query(Posts).filter(Posts.post_uuid == post['post_uuid']).first()
+        #         p.bluesky = True
+        #         sesh.add(p)
+        #         sesh.commit()
 
-            # Going to sleep for 10 seconds to not
-            # get rate limited on twitter API
-            time.sleep(10)
+        #     # Going to sleep for 120 seconds to not
+        #     # get rate limited on bluesky API
+        #     time.sleep(120)
 
     # finish
     print("FINISHED SENDING TO SOCIAL MEDIA")
