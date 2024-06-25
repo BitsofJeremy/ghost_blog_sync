@@ -4,12 +4,12 @@ This is a little app that will grab blog posts from my Ghost blog and then post 
 
 ### Social Media Supported
 
-- [x] Warpcast
-- [x] Twitter
-- [x] Mastodon
-- [] BlueSky (?? not sure if this is possible ??)
-- [] Threads (?? not sure if this is possible ??)
-- [] LinkedIn (?? Do I bother ??)
+- [x] Warpcast (cast_it.py)
+- [x] Twitter (twit_it.py)
+- [x] Mastodon (toot_it.py)
+- [x] BlueSky (sky_it.py)
+- [] Threads (?? not sure if this is possible nicely ??)
+- [] LinkedIn (?? Do I bother with LI ??)
 
 ## The Setup
 
@@ -35,7 +35,7 @@ You will need API keys from your Ghost blog,and social media accounts
 - Create a minimal database: `python db_models.py`
 - Run the sync: `python blog_sync.py`
 
-### Extras
+### Extra: Individual Script Functionality INCLUDED!
 
 Just want to Tweet? 
 
@@ -48,6 +48,10 @@ Just want to Toot?
 Just want to Cast?
 
 `python cast_it.py --send "Test from Python"`
+
+Just want to post to Bluesky?
+
+`python sky_it.py --send "Test from Python"`
 
 Want to set all your blog posts in Ghost set to member only, or fully public?
 

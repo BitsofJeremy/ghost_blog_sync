@@ -63,9 +63,10 @@ class Posts(Base):
         'excerpt': 'String',
         'feature_image': 'String',
         'tags': relationship,
-        'twiiter': Boolean,
+        'twitter': Boolean,
         'warpcast': Boolean,
-        'mastodon': Boolean
+        'mastodon': Boolean,
+        'bluesky': Boolean,
     }
     """
     id = Column(Integer, primary_key=True)
@@ -80,6 +81,7 @@ class Posts(Base):
     twitter = Column(Boolean, default=False)
     warpcast = Column(Boolean, default=False)
     mastodon = Column(Boolean, default=False)
+    bluesky = Column(Boolean, default=False)
 
     # Relationships
     tags = relationship(
@@ -113,7 +115,8 @@ class Posts(Base):
             "tags": self.tags,
             "twitter": self.twitter,
             "warpcast": self.warpcast,
-            "mastodon": self.mastodon
+            "mastodon": self.mastodon,
+            "bluesky": self.bluesky,
         }
 
 

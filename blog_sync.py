@@ -7,6 +7,7 @@ from ghost import get
 from twit_it import send_tweet
 from cast_it import send_cast
 from toot_it import send_toot
+from sky_it import send_post_to_sky
 import time
 from dotenv import load_dotenv
 load_dotenv()
@@ -157,6 +158,31 @@ def main():
 
             # Going to sleep for 10 seconds to not
             # get rate limited on Warpcast API
+            time.sleep(10)
+
+        # ### BLUESKY ### #
+        # Check if posts exists and sent
+        post_in_sky = sesh.query(Posts).filter(Posts.bluesky).filter(
+            Posts.post_uuid == post['post_uuid']).scalar() is not None
+        if post_in_sky:
+            print(f"This post exists in DB and "
+                  f"tweeted:  {post['title']}")
+        else:
+            # send post to bluesky
+            print("Sending post to Bluesky")
+            sky_post = f"{post['title']} {hashtags} {post['url']}"
+            # print(f'sky_post Length: {len(sky_post)}')
+            print(sky_post)
+            sent_sky_post = send_post_to_sky(status=sky_post)
+            if sent_sky_post:
+                # Update the DB we posted this to bluesky already
+                p = sesh.query(Posts).filter(Posts.post_uuid == post['post_uuid']).first()
+                p.bluesky = True
+                sesh.add(p)
+                sesh.commit()
+
+            # Going to sleep for 10 seconds to not
+            # get rate limited on twitter API
             time.sleep(10)
 
     # finish

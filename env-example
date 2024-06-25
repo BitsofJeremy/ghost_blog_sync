@@ -22,3 +22,8 @@ MASTODON_INSTANCE='MASTODON_INSTANCE_TO_POST_TO'
 # Warpcast Mnemonic phrase [12-24 words]
 MNEMONIC_ENV_VAR="hotdog potato etc etc"
 WARPCAST_CHANNEL=farcaster
+
+# Bluesky
+# Username is the email registered
+BLUESKY_USERNAME="user@faang.org"
+BLUESKY_PASSWORD="YOUR_SUPER_SECRET_PASSWORD"
