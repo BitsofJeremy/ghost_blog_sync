@@ -7,7 +7,7 @@ This is a little app that will grab blog posts from my Ghost blog and then post 
 - [x] Warpcast (cast_it.py)
 - [x] Twitter (twit_it.py)
 - [x] Mastodon (toot_it.py)
-- [x] ~~BlueSky (sky_it.py)~~ _Accidently caused may account to get banned, so disabling._
+- [x] ~~BlueSky (sky_it.py)~~ _Accidently caused my account to get banned, so disabling._
 - [] Threads (?? not sure if this is possible nicely ??)
 - [] LinkedIn (?? Do I bother with LI ??)
 
