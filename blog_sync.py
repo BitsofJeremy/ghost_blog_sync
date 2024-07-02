@@ -169,21 +169,23 @@ def main():
             time.sleep(10)
 
         # ### BLUESKY ### #
-        # Check if posts exists and sent
+        # Check if posts exists and sent to Bluesky
         post_in_sky = sesh.query(Posts).filter(Posts.bluesky).filter(
             Posts.post_uuid == post['post_uuid']).scalar() is not None
         if post_in_sky:
             print(f"This post exists in DB and "
-                  f"tweeted:  {post['title']}")
+                  f"posted to Bluesky:  {post['title']}")
         else:
-            # send post to bluesky
+            # send post to Bluesky
             print("Sending post to Bluesky")
-            sky_post = f"{post['title']} {hashtags} {post['url']}"
-            # print(f'sky_post Length: {len(sky_post)}')
-            print(sky_post)
-            sent_sky_post = send_post_to_sky(status=sky_post)
+            sent_sky_post = send_post_to_sky(
+                title=post['title'],
+                link=post['url'],
+                description=post['excerpt'],
+                image_url=post['feature_image']
+            )
             if sent_sky_post:
-                # Update the DB we posted this to bluesky already
+                # Update the DB we posted this to Bluesky already
                 p = sesh.query(Posts).filter(Posts.post_uuid == post['post_uuid']).first()
                 p.bluesky = True
                 sesh.add(p)
@@ -191,7 +193,7 @@ def main():
 
             # Going to sleep between 5 and 30 min
             # to avoid getting rate limited or banned
-            # on bluesky
+            # on Bluesky
             random_sleep(min_minutes=5, max_minutes=30)
 
     # finish
