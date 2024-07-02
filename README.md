@@ -4,10 +4,12 @@ This is a little app that will grab blog posts from my Ghost blog and then post 
 
 ### Social Media Supported
 
-- [x] Warpcast (cast_it.py)
-- [x] Twitter (twit_it.py)
-- [x] Mastodon (toot_it.py)
-- [x] BlueSky (sky_it.py)
+- [x] Warpcast (`cast_it.py`)
+- [x] Twitter (`twit_it.py`)
+- [x] Mastodon (`toot_it.py`) 
+  - _This script works well, but I no longer have a Mastodon account. YMMV_
+  - To enable Mastodon posting you will need to uncomment the section in `blog_sync.py`
+- [x] BlueSky (`sky_it.py`)
 - [] Threads (?? not sure if this is possible nicely ??)
 - [] LinkedIn (?? Do I bother with LI ??)
 

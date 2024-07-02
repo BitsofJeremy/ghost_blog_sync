@@ -121,27 +121,28 @@ def main():
             random_sleep(min_minutes=1, max_minutes=5)
 
         # ### MASTODON ### #
+        # Uncomment to enable Mastodon posting
         # Check if posts exists and tooted
-        post_tooted = sesh.query(Posts).filter(Posts.mastodon).filter(
-            Posts.post_uuid == post['post_uuid']).scalar() is not None
-        if post_tooted:
-            print(f"This post exists in DB and "
-                  f"tooted:  {post['title']}")
-        else:
-            # send post to mastodon
-            print("Sending post to Mastodon")
-            toot = f"{post['title']} {hashtags} {post['url']}"
-            print(toot)
-            sent_toot = send_toot(status=toot)
-            if sent_toot:
-                p = sesh.query(Posts).filter(Posts.post_uuid == post['post_uuid']).first()
-                p.mastodon = True
-                sesh.add(p)
-                sesh.commit()
-
-            # Going to sleep for 10 seconds to not
-            # get rate limited on mastodon API
-            time.sleep(10)
+        # post_tooted = sesh.query(Posts).filter(Posts.mastodon).filter(
+        #     Posts.post_uuid == post['post_uuid']).scalar() is not None
+        # if post_tooted:
+        #     print(f"This post exists in DB and "
+        #           f"tooted:  {post['title']}")
+        # else:
+        #     # send post to mastodon
+        #     print("Sending post to Mastodon")
+        #     toot = f"{post['title']} {hashtags} {post['url']}"
+        #     print(toot)
+        #     sent_toot = send_toot(status=toot)
+        #     if sent_toot:
+        #         p = sesh.query(Posts).filter(Posts.post_uuid == post['post_uuid']).first()
+        #         p.mastodon = True
+        #         sesh.add(p)
+        #         sesh.commit()
+        #
+        #     # Going to sleep for 10 seconds to not
+        #     # get rate limited on mastodon API
+        #     time.sleep(10)
 
         # ### WARPCAST ### #
         # Check if posts exists and casted
