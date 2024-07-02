@@ -1,69 +1,108 @@
-# ghost_blog_sync
+# Ghost Blog Sync
 
-This is a little app that will grab blog posts from my Ghost blog and then post them to social media via APIs
+Welcome to Ghost Blog Sync! This Python application helps you automatically share your Ghost blog posts on various social media platforms.
 
-### Social Media Supported
+## Supported Social Media Platforms
 
-- [x] Warpcast (`cast_it.py`)
-- [x] Twitter (`twit_it.py`)
-- [x] Mastodon (`toot_it.py`) 
-  - _This script works well, but I no longer have a Mastodon account. YMMV_
-  - To enable Mastodon posting you will need to uncomment the section in `blog_sync.py`
-- [x] BlueSky (`sky_it.py`)
-- [] Threads (?? not sure if this is possible nicely ??)
-- [] LinkedIn (?? Do I bother with LI ??)
+- [x] Twitter
+- [x] Warpcast
+- [x] Bluesky
+- [ ] Mastodon (currently disabled, but can be re-enabled)
 
-## The Setup
+## Getting Started
 
-You will need API keys from your Ghost blog,and social media accounts
+### Prerequisites
 
-### API Key authentication setup:
+Before you begin, make sure you have the following installed on your system:
 
-- Copy `env-example` to `.env`
-- Read the `.env` file as it point to where to get the keys
-- Edit it for your setup
-- Source it `source .env`
+- Python 3.7 or higher
+- pip (Python package installer)
+- Git (optional, for cloning the repository)
 
-### Python setup:
+### Installation
 
-- Clone the repo: `git clone https://github.com/BitsofJeremy/ghost_blog_sync.git`
-- Change into the directory: `cd ghost_blog_sync`
-- Create a virtual environment: `virtualenv -p python3 venv`
-- Source it: `source venv/bin/activate`
-- Install requirements: `pip install -r requirements.txt`
+1. Clone the repository or download the project files:
+   ```
+   git clone https://github.com/BitsofJeremy/ghost_blog_sync.git
+   ```
+   If you don't have Git, you can download the ZIP file and extract it.
 
-### Run it:
+2. Navigate to the project directory:
+   ```
+   cd ghost_blog_sync
+   ```
 
-- Create a minimal database: `python db_models.py`
-- Run the sync: `python blog_sync.py`
+3. Create a virtual environment:
+   ```
+   python -m venv venv
+   ```
+   This creates an isolated Python environment for the project.
 
-### Extra: Individual Script Functionality INCLUDED!
+4. Activate the virtual environment:
+   - On Windows:
+     ```
+     venv\Scripts\activate
+     ```
+   - On macOS and Linux:
+     ```
+     source venv/bin/activate
+     ```
 
-Just want to Tweet? 
+5. Install the required packages:
+   ```
+   pip install -r requirements.txt
+   ```
 
-`python twit_it.py --send "Test from Python"`
+### Configuration
 
-Just want to Toot?
+1. Copy the example environment file:
+   ```
+   cp env-example .env
+   ```
 
-`python toot_it.py --send "Test from Python"`
+2. Open the `.env` file in a text editor and fill in your API keys and credentials for Ghost and the social media platforms you want to use. The file contains instructions on where to find these keys.
 
-Just want to Cast?
+3. Save and close the `.env` file.
 
-`python cast_it.py --send "Test from Python"`
+## Usage
 
-Just want to post to Bluesky?
+1. Create the initial database:
+   ```
+   python db_models.py
+   ```
+   This sets up a SQLite database to store information about your blog posts.
 
-`python sky_it.py --send "Test from Python"`
+2. Run the sync script:
+   ```
+   python blog_sync.py
+   ```
+   This script will fetch your Ghost blog posts and share them on the configured social media platforms.
 
-Want to set all your blog posts in Ghost set to member only, or fully public?
+### Individual Platform Posting
 
-_note: currently set to public, change `visibility` to member_
+You can also post to individual platforms using these commands:
 
-`python update_posts.py`
+- Twitter: `python twit_it.py --send "Your message here"`
+- Warpcast: `python cast_it.py --send "Your message here"`
+- Bluesky: `python sky_it.py --title "Your title" --link "https://your-link.com" --description "Your description"`
 
+## Customization
 
+- To enable Mastodon posting, uncomment the relevant section in `blog_sync.py`.
+- You can adjust the sleep times between posts in `blog_sync.py` to avoid rate limiting.
 
+## Troubleshooting
 
+If you encounter any issues:
 
+1. Make sure your `.env` file is correctly filled out.
+2. Check that your virtual environment is activated when running scripts.
+3. Ensure you have the latest version of the code and have installed all requirements.
 
+## Contributing
 
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is open source and available under the [GNU Affero General Public License v3.0](LICENSE).
