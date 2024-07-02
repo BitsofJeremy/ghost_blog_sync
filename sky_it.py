@@ -24,6 +24,13 @@ except Exception as e:
     sys.exit(1)
 
 
+def truncate_text(text, max_length=300):
+    """Truncate text to max_length, ending with ellipsis if truncated."""
+    if len(text) <= max_length:
+        return text
+    return text[:max_length - 1].rsplit(' ', 1)[0] + '…'
+
+
 def send_post_to_sky(title, link, description="", image_url=None):
     """Sends a post to Bluesky with title, link, description, and optionally an image"""
     try:
@@ -35,6 +42,9 @@ def send_post_to_sky(title, link, description="", image_url=None):
                 img_data = response.content
                 thumb = client.upload_blob(img_data)
 
+        # Ensure description is a valid string
+        description = description if description else ""
+
         # Create the embed
         embed = models.AppBskyEmbedExternal.Main(
             external=models.AppBskyEmbedExternal.External(
@@ -45,8 +55,8 @@ def send_post_to_sky(title, link, description="", image_url=None):
             )
         )
 
-        # Create the post text
-        post_text = f"{title}\n\n{link}"
+        # Create the post text and truncate if necessary
+        post_text = truncate_text(f"{title}\n\n{link}")
 
         # Send the post
         post = client.send_post(text=post_text, embed=embed)
