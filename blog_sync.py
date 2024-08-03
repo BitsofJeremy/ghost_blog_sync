@@ -4,13 +4,13 @@
 import os
 from db_models import make_session, Posts, Tags
 from ghost import get
-from twit_it import send_tweet
-from cast_it import send_cast
-from toot_it import send_toot
-from sky_it import send_post_to_sky
 import random
 import time
 from dotenv import load_dotenv
+# Social Media post scripts:
+from cast_it import send_cast
+from sky_it import send_post_to_sky
+
 load_dotenv()
 
 
@@ -95,55 +95,6 @@ def main():
             hashtags += f'{t} '
         # print(f'Hashtags: \n {hashtags}')
 
-        # ### TWITTER ### #
-        # Check if posts exists and tweeted
-        post_tweeted = sesh.query(Posts).filter(Posts.twitter).filter(
-            Posts.post_uuid == post['post_uuid']).scalar() is not None
-        if post_tweeted:
-            print(f"This post exists in DB and "
-                  f"tweeted:  {post['title']}")
-        else:
-            # send post to twitter
-            print("Sending post to Twitter")
-            tweet = f"{post['title']} {hashtags} {post['url']}"
-            # print(f'Tweet Length: {len(tweet)}')
-            print(tweet)
-            sent_tweet = send_tweet(status=tweet)
-            if sent_tweet:
-                # Update the DB we tweeted this post already
-                p = sesh.query(Posts).filter(Posts.post_uuid == post['post_uuid']).first()
-                p.twitter = True
-                sesh.add(p)
-                sesh.commit()
-
-            # Going to sleep for 60 seconds to not
-            # get rate limited on twitter API
-            random_sleep(min_minutes=1, max_minutes=5)
-
-        # ### MASTODON ### #
-        # Uncomment to enable Mastodon posting
-        # Check if posts exists and tooted
-        # post_tooted = sesh.query(Posts).filter(Posts.mastodon).filter(
-        #     Posts.post_uuid == post['post_uuid']).scalar() is not None
-        # if post_tooted:
-        #     print(f"This post exists in DB and "
-        #           f"tooted:  {post['title']}")
-        # else:
-        #     # send post to mastodon
-        #     print("Sending post to Mastodon")
-        #     toot = f"{post['title']} {hashtags} {post['url']}"
-        #     print(toot)
-        #     sent_toot = send_toot(status=toot)
-        #     if sent_toot:
-        #         p = sesh.query(Posts).filter(Posts.post_uuid == post['post_uuid']).first()
-        #         p.mastodon = True
-        #         sesh.add(p)
-        #         sesh.commit()
-        #
-        #     # Going to sleep for 10 seconds to not
-        #     # get rate limited on mastodon API
-        #     time.sleep(10)
-
         # ### WARPCAST ### #
         # Check if posts exists and casted
         post_casted = sesh.query(Posts).filter(Posts.warpcast).filter(
@@ -192,10 +143,10 @@ def main():
                 sesh.add(p)
                 sesh.commit()
 
-            # Going to sleep between 5 and 30 min
+            # Going to sleep between 5 and 10 min
             # to avoid getting rate limited or banned
             # on Bluesky
-            random_sleep(min_minutes=5, max_minutes=30)
+            random_sleep(min_minutes=5, max_minutes=10)
 
     # finish
     print("FINISHED SENDING TO SOCIAL MEDIA")

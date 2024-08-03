@@ -4,10 +4,9 @@ Welcome to Ghost Blog Sync! This Python application helps you automatically shar
 
 ## Supported Social Media Platforms
 
-- [x] Twitter
 - [x] Warpcast
 - [x] Bluesky
-- [ ] Mastodon (currently disabled, but can be re-enabled)
+
 
 ## Getting Started
 
@@ -15,7 +14,7 @@ Welcome to Ghost Blog Sync! This Python application helps you automatically shar
 
 Before you begin, make sure you have the following installed on your system:
 
-- Python 3.7 or higher
+- Python 3.11 or higher
 - pip (Python package installer)
 - Git (optional, for cloning the repository)
 
@@ -82,7 +81,6 @@ Before you begin, make sure you have the following installed on your system:
 
 You can also post to individual platforms using these commands:
 
-- Twitter: `python twit_it.py --send "Your message here"`
 - Warpcast: `python cast_it.py --send "Your message here"`
 - Bluesky: `python sky_it.py --title "Your title" --link "https://your-link.com" --description "Your description"`
 
